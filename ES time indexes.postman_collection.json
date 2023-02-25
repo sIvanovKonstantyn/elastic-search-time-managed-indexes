@@ -1,0 +1,196 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ES time indexes",
+		"_postman_id": "af2a4bee-b99d-bd0b-4fdb-58fef623a81d",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:9200/_cat/indices",
+			"request": {
+				"url": "http://localhost:9200/_cat/indices",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9200/my-index-2023.02.20/_doc/",
+			"request": {
+				"url": "http://localhost:9200/content-2023.01.15/_doc/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"content_id\": \"content_id01_15\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9200/my-index-2023.02.*/_search",
+			"request": {
+				"url": "http://localhost:9200/content-2023.*/_search",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"query\": {\n\t\t\"term\": {\n\t\t\t \"content_id\": \"content_id01_15\"\n\t\t}\n\t}\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9200/my-index-2023.02.20/_doc/WtR2iIYBA6lI5iO7WfsC",
+			"request": {
+				"url": "http://localhost:9200/my-index-2023.02.20/_doc/WtR2iIYBA6lI5iO7WfsC",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/index?date=2023-01-01",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/index?date=2023-02-21&contentId=content_id18",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"index"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2023-02-21",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "contentId",
+							"value": "content_id18",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/search?numberOfDays=30&contentId=content_id01_15",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/search?numberOfDays=30&contentId=content_id01_15",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"search"
+					],
+					"query": [
+						{
+							"key": "numberOfDays",
+							"value": "30",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "contentId",
+							"value": "content_id01_15",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9200/content-2023.*/_ilm/explain",
+			"request": {
+				"url": "http://localhost:9200/content-2023.*/_ilm/explain",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9200/_index_template/content_template",
+			"request": {
+				"url": "http://localhost:9200/_index_template/content_template",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"index_patterns\": [\"content-*\"],                   \r\n  \"template\": {\r\n    \"settings\": {\r\n      \"number_of_shards\": 8,\r\n      \"number_of_replicas\": 1,\r\n      \"index.lifecycle.name\": \"content_policy\"     \r\n    }\r\n  }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:9200/_ilm/policy/content_policy",
+			"request": {
+				"url": "http://localhost:9200/_ilm/policy/content_policy",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"policy\": {\r\n    \"phases\": {\r\n      \"delete\": {\r\n        \"min_age\": \"90d\",                     \r\n        \"actions\": {\r\n          \"delete\": {}                        \r\n        }\r\n      }\r\n    }\r\n  }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
